@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "DDD course notes for backend architecture!"
-date:   2020-10-21 18:38:36 +0200
+date:   2020-11-16 10:38:36 +0200
 description: 'Taken at 32% of the course'
 permalink: 'ddd_basic_notes_2'
 author: kkp
