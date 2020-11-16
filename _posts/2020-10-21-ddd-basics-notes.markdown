@@ -7,13 +7,13 @@ permalink: 'ddd_basic_notes_1'
 author: kkp
 ---
 
-#ReadModels and CQRS:
+# ReadModels and CQRS:
 
 Base info
 ---------------------
   - (read models) Also called materialized views
 
-#Event Sourcing
+# Event Sourcing
 
 Base info
 ---------------------
@@ -24,7 +24,7 @@ Base info
   - In case of mistakes, you compensate for them, instead of fixing the data, using correct events.
   
 
-#DDD
+# DDD
 
 Base Info
 ---------------------
