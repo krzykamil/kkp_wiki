@@ -7,7 +7,7 @@ permalink: 'ddd_basic_notes_2'
 author: kkp
 ---
 
-#BackendArchitectureNotes
+# BackendArchitectureNotes
 
 ### Some articles to read before/after this:
 
@@ -15,14 +15,14 @@ author: kkp
 - https://blog.arkency.com/2016/09/command-bus-in-a-rails-application/ - about command bus gem, but also as a pattern of commands in CQRS overall
 - https://blog.arkency.com/process-managers-revisited/ - about Process Managers pattern
 - https://blog.arkency.com/2017/06/dogfooding-process-manager/ - also about Process Managers pattern
-##CQRS READ MODELS
+## CQRS READ MODELS
 
  **In CQS a method must either be a command that performs an action or a query that returns data. Never both**
 
 Most apps are 90% read and 10% write. So separating read from write can have a huge performance boost. Also separating write
 is rather important, since it protects, your domain and business logic better.
 
-#####Pros of CQRS in short:
+##### Pros of CQRS in short:
 - Improve read operations performance
     - Data store of read models is optimized for reads
     - Scales independently
@@ -46,7 +46,7 @@ Read Model
   
   RM can be build without Domain Event ofc. but its not decoupled, it cannot be easily deactivated/refactored.
     
-#####Read Models and caching:
+##### Read Models and caching:
   - RM is the solo consumer of changing events, we always know when data will change
   - Caching is time based or key-attribute based
 
@@ -61,7 +61,7 @@ Event Sourcing
 --------
 **Storing all changes in form of domain events**
 
-#####Pros:
+##### Pros:
   - no OR mapping, means avoidance of impedance mismatch
   - append only store, not losing any data, like ever
   - audit logs come with
@@ -71,7 +71,7 @@ Event Sourcing
   - different read models possible
   - easy to scale, start small go big with the same architecture
 
-#####Cons:
+##### Cons:
   - no rails c and change some data on prod
   - no data migration
   - huge mindset change
@@ -96,7 +96,7 @@ Remember that bringing too much data into events is an anti pattern, and means t
 Process Managers and Sagas
 --------
 
-#####Example system
+##### Example system
 1. PostalAddedToOrder     - #event
 2. PostalAddressFilledOut - #event
 3. PdfGenerated           - #event
@@ -106,7 +106,7 @@ Process Managers and Sagas
 
 Events do not need to happen in that exact order though.
 
-###Saga
+### Saga
 A saga is a "long-lived business transaction or process". The problem with aggregates is that they only care about their little part of the universe. Sagas, on the other hand, are coordinating objects.  They listen for what's happening and they tell other objects to take appropriate action.
 Sagas manage process.  They contain business behavior, but only in the form of process.  This is a critical point.  Sagas, in their purest form, don't contain business logic.
 
@@ -119,7 +119,7 @@ Saga can for example inherit from ApplicationJob, use sidekiq etc.
 Saga can also for example handle cases like the same event happening several times. For example if you have an event about order being purchased, and you get a discount
 after 5  purchased orders, Saga will await receiving 5 of those event and then send a command that will generate discount.
 
-###Process Managers
+### Process Managers
 Also a pattern that can be helpful in modeling long running business processes. They usually consist of multiple steps, they do not have to happen in any specific order etc. or one after another.
 This pattern is helpful when there can be some kind of 'race' problems, when events can happen in different order everytime they happen, when the whole process in initialized.
 Like in sagas, PM operates on multiple domain events and produces a command. It is kind of a big event handler, listening to many events at once.
@@ -322,7 +322,6 @@ And here is how you can subscribe the events to the process in the config of eve
 ```
 
 
-###Differences between Sagas and Process Managers
 Sagas are more about being able to compensate for failure in a process, for example backtracking in a process that has a predictable failure, or just allows this kind of action to be taken.
 PM in this case, are more useful to handle processes that are complicated, or large, but do not allow failures.
 For example: you book a hotel, book a car, and then try to book a flight, but something goes wrong there/you change your mind. You go back and cancel the car and hotel. Saga is the pattern to be used
