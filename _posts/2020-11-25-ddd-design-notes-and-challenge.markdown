@@ -22,7 +22,7 @@ Rule of thumb is that 3-10 is okey, and 1 is standard for simpler/smaller BC
 to try and follow Rails directory structure when using DDD in rails, rails can just be used for its routing, views, controllers
 etc, while DDD follows its own rules of segregating read models, BCs. Do not force rails architecture into DDD, do it the other way around.
 - Authentication and Authorization: 
-  - can though of as BC (to me that seems to complicated, and makes it easier to mistake it into putting auth into domain level whcih is not fine as said below)
+  - can though of as BC (to me that seems too complicated, and makes it easier to mistake it into putting auth into domain level whcih is not fine as said below)
   - current_user makes sense at the application level, but not at domain level. Passing id of user into command is fine, but not the whole objects.
   standard solution is app controller filter that uses current user. deal with auth and then creates commands, passes them further, or grabs read model etc.
   Domain elements should not know about auth, application should, since auth is part of the application not the domain.
@@ -266,7 +266,7 @@ end
 
 And then of course ReadModels and their config
 ```ruby
-           
+
 module Workshops
   class ReadModels
     class ScheduledEdition
@@ -328,7 +328,9 @@ edge cases and paths. There is a need for another BC, dealing with venues.
 - **Mistakes:** A separate `Policy` object should be added for cancellation or confirming, called with adequate
 events. Those Policy objects would check conditions for their actions (cancel/confirm) and issue command to command bus, based on 
 conditions. Something like this:
+
 ```ruby
+
 module Workshops
   module CancellationPolicy
     def initlize(command_bus)
@@ -365,9 +367,12 @@ module Workshops
     end
   end
 end
+
 ```
+
 -**Thought:** there was a nice way of scheduling the event into the future presented, which I liked. So instead
 of classical cron job we could do something like this:
+
 ```ruby
 module Calendar
   class TwoWeeksBeforeEditionReached < RailsEventStore::Event
@@ -392,6 +397,7 @@ end
 
 Rails.configuration.event_store.subscrive(deadline, to: [EditionScheduled])
 ```
+
 - **Good that I did:** I think a lot of the connections between classes clicked for me here finally. Event to command
 to command handler to aggregate. It is hard without working on such a complex concept without a real project
 so even like a small design challenge like this helped a lot to put stuff together and I think I did okey in it.
