@@ -13,23 +13,26 @@ author: kkp
 # Design Challenge
 Given a certain business description, provide a design in form of code, drawing, tests or whatever.
 
-## Example Design challenge to implement:
-### Sales Processing:
-#### Actors
+# Example Design challenge to implement:
+## Sales Processing:
+### Actors
 - Sales person
 - Company owning products
 - Commission platform
-#### Requirements
+
+### Requirements
 - Sales person sells a product. They get a commission based on agreed conditions, from the company. The commission platform receives an agreed (with the company) N% from each commission too.
 - Sales people can sell products from different companies
 - The company can see, each month, how much they need to pay to each sales person and why
 - The platform admins can see how much they will charge the companies
 - The sales person knows at any moment how much of their sales they made - how much commission was made
-#### What ifs
+
+### What ifs
 - we get a sale information, but the product was not provided yet?
 - we get a sale info, but we don't have the commission agreement with the sales man?
 - what if the commission agreement can change, also back in time?
-### My design of [design challenge](#sales-processing):
+
+## My design of [design challenge](#sales-processing):
 
 Base Files structure for just sale made looks like that:
 ![Domain Structure](https://i.imgur.com/KaPKtL9.jpg "Files")
@@ -60,7 +63,7 @@ Here is my explanation for this structure step by step:
 - *CommissionsApplied* - This event will cause commissions for both the sales person and the platform to get calculated. Fired after sale is made, or on demand when altering agreements
 
 This is written as I go so some questions are still here, along with uncertainties.
-On to the code. This app's code is available at ![GH](https://github.com/krzykamil/ddd_app/commit/ab94aa40c7fab2a6118383abbc8eecfe6701b866) this time it is fully flesh out mini app that works (with some mocks and assumptions, like 1 product for 1 sale but in many quantities, no discounts, simple relationships, but still).
+On to the code. This app's code is available at [GH](https://github.com/krzykamil/ddd_app/commit/ab94aa40c7fab2a6118383abbc8eecfe6701b866) this time it is fully flesh out mini app that works (with some mocks and assumptions, like 1 product for 1 sale but in many quantities, no discounts, simple relationships, but still).
 
 ### Note
 This uses nice helpers by Arkency as defined [here](https://github.com/RailsEventStore/cqrs-es-sample-with-res/tree/0de944cf7fa31ba26ee1572b3ccb4d3215b14aed/lib)
