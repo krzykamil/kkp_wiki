@@ -60,11 +60,11 @@ Here is my explanation for this structure step by step:
 - *CommissionsApplied* - This event will cause commissions for both the sales person and the platform to get calculated. Fired after sale is made, or on demand when altering agreements
 
 This is written as I go so some questions are still here, along with uncertainties.
-On to the code. This app is available at ![GH]() this time it is fully flesh out mini app that works (with some mocks and assumptions, like 1 product for 1 sale but in many quantities, no discounts, simple relationships, but still).
+On to the code. This app's code is available at ![GH](https://github.com/krzykamil/ddd_app/commit/ab94aa40c7fab2a6118383abbc8eecfe6701b866) this time it is fully flesh out mini app that works (with some mocks and assumptions, like 1 product for 1 sale but in many quantities, no discounts, simple relationships, but still).
 
 ### Note
-This uses nice helpers by arkency as defined here https://github.com/RailsEventStore/cqrs-es-sample-with-res/tree/0de944cf7fa31ba26ee1572b3ccb4d3215b14aed/lib
-I use the same (minus the types that I will not use) in my lib/ since they are nice and simple and obviously made to work with RES. I recommend checking the source code of them it is some clever stuff!
+This uses nice helpers by Arkency as defined [here](https://github.com/RailsEventStore/cqrs-es-sample-with-res/tree/0de944cf7fa31ba26ee1572b3ccb4d3215b14aed/lib)
+I use almost the same (minus the types that I will not use, slight modification in Event) in my lib/ since they are nice and simple and obviously made to work with RES. I recommend checking the source code of them it is some clever stuff!
 I will skip showing snippets of migrations, application.rb config etc. cause that is not what is important in this lesson. This note is mostly about
 contracting the idea and design.
 I have included basic seeds to make the base example work.
@@ -257,6 +257,8 @@ person or platform depending on who changes the agreement. When we got those new
 events for each sale that are the newest (specific events about calculating the commissions). Then display the correct value field
 from the event. I did not write that code since its rather easy and straightforward and the code below for base commissions already
 help me a lot in grasping the whole idea and design of the rest is enough for me here. Pretty happy with how it all is coming together.
+
+![Commissions](https://i.imgur.com/PKJv1r0.jpg "Commission FIles")
 
 ```ruby
 
