@@ -68,7 +68,7 @@ Strategic Pattern
 ---------------------
 #### Bounded Context
   - Rails makes it hard to refactor nicely cause it has too many ways to access data through AR and it makes it impossible to know all the places affected by certain code changes. Alternative is DDD.
-  - Whenever something interesting happens in a certain domain we publish that information. Certain parts of code can usbscribe to it and react to it in their own way, use it in their own data.
+  - Whenever something interesting happens in a certain domain we publish that information. Certain parts of code can subscribe to it and react to it in their own way, use it in their own data.
   - So instead of one code using data controller by another code, they use an event published by that code based on its data.
   - Makes it easier to detect what you are changing, what can you break when you refactor.
   - They will have two things always
