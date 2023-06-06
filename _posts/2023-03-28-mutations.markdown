@@ -168,6 +168,7 @@ All mutations are from the same method, so posting the full one once, then posti
 ##### Conclusion:
 1. Case 1 is just redundant `::` operator for zeitwerk.
 2. Mutant is making this change a lot, I am not sure what is the reasoning for it. It wants to enforce using `fetch`. `{}[non_existent_key]` returns nil, but `{}.fetch(non_existent_key)` raises a `KeyError`. I was thinking a long time about why it always checks it. Does it want to enforce using code that throws an error is non-existing key is being accessed from hash? I checked for more detailed behaviour of fetch vs regular hash extraction:
+
 ```ruby
 hash = {
   'a' => :some_value,
@@ -185,6 +186,7 @@ hash.fetch('d', :default_value) #=> :default_value
 (hash['c'] || :default_value) #=> :default_value
 (hash['d'] || :default_value) #=> :default_value
 ```
+
 So basically fetch is a shortcut to: `hash.key?(key) ? hash[key] : default` but with also an option to raise an error. Mutant however does not say anything about adding default value is his mutation.
 The reasoning I see it could have behind it is something like: if key is missing from the hash, nil will get passed down the code stack, this should probably break the code but it does not, fetch would.
 Having fetch and missing a key, should either break the spec/code or be handled (by default value or catch, rescue etc). I think this is a bit redundant mutation.
@@ -195,6 +197,7 @@ Anyway I added the `fetch` here. It is SOMEWHAT pointless in my opinion, I still
 
 ## Przypadek 2:
 ### Test
+
 ```ruby
 require "rails_helper"
 
@@ -235,7 +238,9 @@ RSpec.describe ParsePhotoParams do
   end
 end
 ```
+
 ### Object
+
 ```ruby
 class ParsePhotoParams
   class << self
@@ -275,6 +280,7 @@ Overhead:        -72.21%
 Mutations/s:     2.05
 Coverage:        74.82%
 ```
+
 #### Mutations:
 **There were 35 alive mutations, some of them were touching on the same problem, so I condensed them into smaller number of common mutations for the sake of brevity.**
 1:
