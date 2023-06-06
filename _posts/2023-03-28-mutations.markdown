@@ -283,31 +283,43 @@ Coverage:        74.82%
 
 #### Mutations:
 **There were 35 alive mutations, some of them were touching on the same problem, so I condensed them into smaller number of common mutations for the sake of brevity.**
+
 1:
+
 ```ruby
 -    params.to_h.deep_symbolize_keys
 +    params.to_hash.deep_symbolize_keys
 ```
+
 I'll be honest I thought `to_h` is an alias of `to_hash`. The difference is that `to_h` will return `ActiveSupport::HashWithIndifferentAccess` while the second on will give pure ruby hash. Both still remove the unpermitted params.
 That being said I have zero understanding on why this should affect the specs. I tried adding this pattern to ignore in config file, but failed. Documentation shows some bad yml syntax and I was left confused about how to actually add a pattern to it
 Worst thing though is that according to the mutation if I do this change, the test will not fail, but it does fail when I change it...
 If the mutation is about some different problem than "with this change the test does not fail, it should have" then it is very unclear. I have spent quite some time on it, and it has only left me confused.
+
 2:
+
 Mutant got hooked on this line
-```photo.tempfile.open```
+
+`photo.tempfile.open`
+
 This line exists because optionally a file can get closed in the process of getting to the piece of code in question. Most of the alive mutations were about it.
 I closed the file in the spec to make it more viable in the test run of the code.
 This has not done anything to the mutation (the file was closed now, coming in to the class from the spec).
 Tried doing the same live.
 The code crashed without the line that checks for closed and open the file (the file is later read when creating a Photo from it).
 Don't understand this either. The error does not get raised in the mutation runs for some reason?
+
+
 3:
+
 ```ruby
 -    { image: { object_class: photo.class, file_type: photo.content_type, file_size: photo.tempfile.size } }
 +    { image: { object_class: photo.class, file_type: photo.content_type, file_size: photo.size } }
 ```
 `photo.size` is the same as `photo.tempfile.size` so we can skip the tempfile referencing
+
 4:
+
 ```ruby
 -      params[:original_photo] = Photo.new(image: photo)
 +      params[:original_photo] = Photo.new(image: nil)
@@ -316,7 +328,10 @@ Don't understand this either. The error does not get raised in the mutation runs
 -      params[:original_photo] = Photo.new(image: photo)
 +      params[:original_photo] = Photo.new
 ```
-`expect(subject[:original_photo]).to be_an_instance_of(Photo)` this was not sufficient enough. I added the check for image params
+This:
+`expect(subject[:original_photo]).to be_an_instance_of(Photo)` 
+was not sufficient.
+I added the check for image params
 
 ##### Changes:
 The end spec is:
